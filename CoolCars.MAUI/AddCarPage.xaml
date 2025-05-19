@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CoolCars.MAUI.AddCarPage"
+             Title="Add New Car">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <Label Text="Car Details" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,0,20"/>
+            
+            <Label Text="Name" FontAttributes="Bold"/>
+            <Entry x:Name="NameEntry" Placeholder="Enter car name"/>
+            
+            <Label Text="Image URL" FontAttributes="Bold"/>
+            <Entry x:Name="ImageUrlEntry" Placeholder="Enter image URL"/>
+            
+            <Label Text="Engine Specs" FontAttributes="Bold"/>
+            <Entry x:Name="EngineSpecsEntry" Placeholder="Enter engine specifications"/>
+            
+            <Label Text="Price" FontAttributes="Bold"/>
+            <Entry x:Name="PriceEntry" Placeholder="Enter price"/>
+            
+            <Label Text="0-100 km/h Acceleration" FontAttributes="Bold"/>
+            <Entry x:Name="Acceleration0100Entry" Placeholder="Enter 0-100 km/h time"/>
+            
+            <Label Text="0-200 km/h Acceleration" FontAttributes="Bold"/>
+            <Entry x:Name="Acceleration0200Entry" Placeholder="Enter 0-200 km/h time"/>
+            
+            <Label Text="Quarter Mile Time" FontAttributes="Bold"/>
+            <Entry x:Name="QuarterMileTimeEntry" Placeholder="Enter quarter mile time"/>
+            
+            <Label Text="Top Speed" FontAttributes="Bold"/>
+            <Entry x:Name="TopSpeedEntry" Placeholder="Enter top speed"/>
+            
+            <Button Text="Add Car" Clicked="OnAddCarClicked" Margin="0,20,0,0"/>
+            <Button Text="Cancel" Clicked="OnCancelClicked" BackgroundColor="#dddddd" TextColor="Black"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

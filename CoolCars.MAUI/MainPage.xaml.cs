@@ -16,6 +16,11 @@ public partial class MainPage : ContentPage
 		_cars = new ObservableCollection<Car>();
 		BindingContext = _cars;
 	}
+	
+	private async void OnAddCarClicked(object sender, EventArgs e)
+	{
+		await Navigation.PushAsync(new AddCarPage());
+	}
 
 	private async void OnLoadCarsClicked(object sender, EventArgs e)
 	{

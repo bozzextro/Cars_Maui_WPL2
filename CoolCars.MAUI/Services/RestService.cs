@@ -62,22 +62,31 @@ namespace CoolCars.MAUI.Services
             return (cars, errorMessage);
         }
 
-        public async Task<bool> AddCarAsync(Car car)
+        public async Task<(bool Success, string ErrorMessage)> AddCarAsync(Car car)
         {
             try
             {
                 string json = JsonConvert.SerializeObject(car);
                 StringContent content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
                 
-                HttpResponseMessage response = await _client.PostAsync($"{REST_URL}car", content);
+                HttpResponseMessage response = await _client.PostAsync(REST_URL, content);
                 
-                return response.IsSuccessStatusCode;
+                if (response.IsSuccessStatusCode)
+                {
+                    return (true, null);
+                }
+                else
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    return (false, $"API Error: {response.StatusCode} - {errorContent}");
+                }
             }
             catch (System.Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
-                return false;
+                return (false, $"Exception: {ex.Message}");
             }
         }
+
+
     }
 }
