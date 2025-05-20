@@ -10,7 +10,7 @@ namespace CoolCars.MAUI.Services
     {
         private readonly HttpClient _client;
 
-        private const string REST_URL = "https://tqw6j6l8-7051.euw.devtunnels.ms/api/car";
+        private const string REST_URL = "https://ljd3nh03-7051.euw.devtunnels.ms/api/car";
 
         public RestService()
         {
@@ -37,10 +37,17 @@ namespace CoolCars.MAUI.Services
                     
                     if (!string.IsNullOrEmpty(content))
                     {
-                        cars = JsonConvert.DeserializeObject<List<Car>>(content);
-                        if (cars == null || cars.Count == 0)
+                        try
                         {
-                            errorMessage = "No cars found in the response data";
+                            cars = JsonConvert.DeserializeObject<List<Car>>(content);
+                            if (cars == null || cars.Count == 0)
+                            {
+                                errorMessage = "No cars found in the response data";
+                            }
+                        }
+                        catch (JsonException jsonEx)
+                        {
+                            errorMessage = $"JSON parsing error: {jsonEx.Message}\nActual content: {content}";
                         }
                     }
                     else

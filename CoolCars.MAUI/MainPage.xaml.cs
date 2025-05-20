@@ -7,12 +7,14 @@ namespace CoolCars.MAUI;
 public partial class MainPage : ContentPage
 {
 	private readonly RestService _restService;
+	private readonly SoundPlayerService _soundPlayerService;
 	private ObservableCollection<Car> _cars;
 
 	public MainPage()
 	{
 		InitializeComponent();
 		_restService = new RestService();
+		_soundPlayerService = new SoundPlayerService();
 		_cars = new ObservableCollection<Car>();
 		BindingContext = _cars;
 	}
@@ -50,6 +52,26 @@ public partial class MainPage : ContentPage
 		catch (Exception ex)
 		{
 			await DisplayAlert("Error", $"Failed to load cars: {ex.Message}", "OK");
+		}
+	}
+	
+	private async void OnPlaySoundClicked(object sender, EventArgs e)
+	{
+		try
+		{
+			if (sender is Button button && button.CommandParameter is string carName)
+			{
+				await DisplayAlert("Info", $"Attempting to play sound for: {carName}", "OK");
+				var result = await _soundPlayerService.PlayCarSoundAsync(carName);
+				if (!result)
+				{
+					await DisplayAlert("Warning", "Sound could not be played. See debug output for details.", "OK");
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			await DisplayAlert("Error", $"Failed to play sound: {ex.Message}", "OK");
 		}
 	}
 }

@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using Plugin.Maui.Audio;
 
 namespace CoolCars.MAUI;
 
@@ -18,6 +19,9 @@ public static class MauiProgram
 			{
 				// Add any custom handlers here if needed
 			});
+		
+		// Register the audio service
+		builder.Services.AddSingleton(AudioManager.Current);
 
 #if DEBUG
 		builder.Logging.AddDebug();
