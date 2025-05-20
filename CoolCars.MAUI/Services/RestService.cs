@@ -94,6 +94,51 @@ namespace CoolCars.MAUI.Services
             }
         }
 
+        public async Task<(bool Success, string ErrorMessage)> DeleteCarAsync(int carId)
+        {
+            try
+            {
+                HttpResponseMessage response = await _client.DeleteAsync($"{REST_URL}/{carId}");
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    return (true, null);
+                }
+                else
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    return (false, $"API Error: {response.StatusCode} - {errorContent}");
+                }
+            }
+            catch (System.Exception ex)
+            {
+                return (false, $"Exception: {ex.Message}");
+            }
+        }
 
+        public async Task<(bool Success, string ErrorMessage)> DeleteMultipleCarsAsync(List<int> carIds)
+        {
+            try
+            {
+                string json = JsonConvert.SerializeObject(carIds);
+                StringContent content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+                
+                HttpResponseMessage response = await _client.DeleteAsync($"{REST_URL}/multiple?ids={string.Join(",", carIds)}");
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    return (true, null);
+                }
+                else
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    return (false, $"API Error: {response.StatusCode} - {errorContent}");
+                }
+            }
+            catch (System.Exception ex)
+            {
+                return (false, $"Exception: {ex.Message}");
+            }
+        }
     }
 }

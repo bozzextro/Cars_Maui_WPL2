@@ -12,6 +12,7 @@ public partial class MainPage : ContentPage
 	private readonly VideoPlayerService _videoPlayerService;
 	private ObservableCollection<Car> _cars;
 	private bool _isNightMode = false;
+	private bool _isDeleteMode = false;
 
 	public MainPage()
 	{
@@ -33,33 +34,31 @@ public partial class MainPage : ContentPage
 	{
 		try
 		{
-			var result = await _restService.GetCarsAsync();
+			var (cars, errorMessage) = await _restService.GetCarsAsync();
 			
-			_cars.Clear();
-			
-			if (result.Cars != null)
+			if (string.IsNullOrEmpty(errorMessage))
 			{
-				foreach (var car in result.Cars)
+				_cars.Clear();
+				foreach (var car in cars)
 				{
+					// Add IsSelected property to each car
+					car.IsSelected = false;
 					_cars.Add(car);
 				}
+				
+				if (_cars.Count == 0)
+				{
+					await DisplayAlert("No Cars", "No cars found in the database.", "OK");
+				}
 			}
-			
-			if (!string.IsNullOrEmpty(result.ErrorMessage))
+			else
 			{
-				await DisplayAlert("API Error", result.ErrorMessage, "OK");
+				await DisplayAlert("Error", $"Failed to load cars: {errorMessage}", "OK");
 			}
-			else if (_cars.Count == 0)
-			{
-				await DisplayAlert("Info", "No cars found. Please make sure the Web API is running.", "OK");
-			}
-			
-
-			UpdateListViewCells(_isNightMode);
 		}
 		catch (Exception ex)
 		{
-			await DisplayAlert("Error", $"Failed to load cars: {ex.Message}", "OK");
+			await DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
 		}
 	}
 	
@@ -103,6 +102,80 @@ public partial class MainPage : ContentPage
 	{
 		_isNightMode = !_isNightMode;
 		ApplyTheme();
+	}
+	
+	private void OnDeleteModeClicked(object sender, EventArgs e)
+	{
+		_isDeleteMode = true;
+		DeleteModeButton.IsVisible = false;
+		DeleteSelectedButton.IsVisible = true;
+	}
+	
+	private async void OnDeleteSelectedClicked(object sender, EventArgs e)
+	{
+		var selectedCars = _cars.Where(c => c.IsSelected).ToList();
+		
+		if (selectedCars.Count == 0)
+		{
+			await DisplayAlert("No Selection", "Please select at least one car to delete.", "OK");
+			return;
+		}
+		
+		bool confirm = await DisplayAlert("Confirm Deletion", $"Are you sure you want to delete {selectedCars.Count} selected car(s)?", "Yes", "No");
+		
+		if (confirm)
+		{
+			List<int> carIds = selectedCars.Select(c => c.Id).ToList();
+			
+			var (success, errorMessage) = await _restService.DeleteMultipleCarsAsync(carIds);
+			
+			if (success)
+			{
+				foreach (var car in selectedCars)
+				{
+					_cars.Remove(car);
+				}
+				
+				await DisplayAlert("Success", $"{selectedCars.Count} car(s) deleted successfully.", "OK");
+			}
+			else
+			{
+				await DisplayAlert("Error", $"Failed to delete cars: {errorMessage}", "OK");
+			}
+		}
+		
+		// Exit delete mode
+		_isDeleteMode = false;
+		DeleteModeButton.IsVisible = true;
+		DeleteSelectedButton.IsVisible = false;
+	}
+	
+	private async void OnDeleteCarClicked(object sender, EventArgs e)
+	{
+		if (sender is Button button && button.CommandParameter is int carId)
+		{
+			bool confirm = await DisplayAlert("Confirm Deletion", "Are you sure you want to delete this car?", "Yes", "No");
+			
+			if (confirm)
+			{
+				var (success, errorMessage) = await _restService.DeleteCarAsync(carId);
+				
+				if (success)
+				{
+					var carToRemove = _cars.FirstOrDefault(c => c.Id == carId);
+					if (carToRemove != null)
+					{
+						_cars.Remove(carToRemove);
+					}
+					
+					await DisplayAlert("Success", "Car deleted successfully.", "OK");
+				}
+				else
+				{
+					await DisplayAlert("Error", $"Failed to delete car: {errorMessage}", "OK");
+				}
+			}
+		}
 	}
 	
 	private void UpdateListViewCells(bool isDarkMode)

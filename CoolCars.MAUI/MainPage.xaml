@@ -34,7 +34,6 @@
 
     <Grid RowDefinitions="Auto,*" Padding="10">
         <Grid Grid.Row="0" RowDefinitions="Auto,Auto" Margin="0,0,0,15">
-            <!-- Header Banner -->
             <Grid Grid.Row="0" BackgroundColor="#1A237E" Padding="15,20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -43,12 +42,10 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                
                 <StackLayout Grid.Column="0" VerticalOptions="Center">
                     <Label Text="COOL CARS" FontSize="28" FontAttributes="Bold" TextColor="White" />
                     <Label Text="Premium Automotive Collection" FontSize="14" TextColor="#BBDEFB" />
                 </StackLayout>
-                
                 <Button 
                     Grid.Column="1"
                     x:Name="NightModeButton"
@@ -64,9 +61,13 @@
                     VerticalOptions="Center" />
             </Grid>
             
-            <!-- Action Buttons -->
             <Grid Grid.Row="1" Padding="15,10" BackgroundColor="#EEEEEE">
-                <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                
+                <HorizontalStackLayout Grid.Column="0" HorizontalOptions="Center" Spacing="20">
                     <Button 
                         Text="🔄 Load Cars" 
                         Clicked="OnLoadCarsClicked"
@@ -85,6 +86,30 @@
                         CornerRadius="8"
                         Padding="15,10" />  
                 </HorizontalStackLayout>
+                
+                <Button 
+                    x:Name="DeleteModeButton"
+                    Grid.Column="1"
+                    Text="🗑️ Select" 
+                    Clicked="OnDeleteModeClicked"
+                    BackgroundColor="#F44336"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    CornerRadius="8"
+                    Padding="15,10"
+                    IsVisible="True" />
+                
+                <Button 
+                    x:Name="DeleteSelectedButton"
+                    Grid.Column="1"
+                    Text="🗑️ Delete Selected" 
+                    Clicked="OnDeleteSelectedClicked"
+                    BackgroundColor="#F44336"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    CornerRadius="8"
+                    Padding="15,10"
+                    IsVisible="False" />
             </Grid>
         </Grid>
             
@@ -134,22 +159,49 @@
                                 <Label Text="{Binding TopSpeed, StringFormat='Top Speed: {0}'}" Style="{StaticResource InfoTextStyle}" />
                             </StackLayout>
                             
-                            <StackLayout Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Spacing="10" Margin="0,12,0,0">
-                                <Button Text="🔊 Engine Sound" 
+                            <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,12,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                
+                                <Button Grid.Column="0"
+                                        Text="🔊 Engine Sound" 
                                         BackgroundColor="#FF5722"
                                         TextColor="White"
                                         FontAttributes="Bold"
                                         CommandParameter="{Binding Name}"
                                         Clicked="OnPlaySoundClicked"
-                                        HorizontalOptions="FillAndExpand" />
-                                <Button Text="🎬 Watch Video" 
+                                        Margin="0,0,5,0" />
+                                        
+                                <Button Grid.Column="1"
+                                        Text="🎬 Watch Video" 
                                         BackgroundColor="#2196F3"
                                         TextColor="White"
                                         FontAttributes="Bold"
                                         CommandParameter="{Binding Name}"
                                         Clicked="OnPlayVideoClicked"
-                                        HorizontalOptions="FillAndExpand" />
-                            </StackLayout>
+                                        Margin="5,0,0,0" />
+                                        
+                                <Button Grid.Column="2"
+                                        Text="🗑️" 
+                                        BackgroundColor="#F44336"
+                                        TextColor="White"
+                                        FontAttributes="Bold"
+                                        CommandParameter="{Binding Id}"
+                                        Clicked="OnDeleteCarClicked"
+                                        WidthRequest="50"
+                                        HeightRequest="50"
+                                        Margin="10,0,0,0"
+                                        IsVisible="{Binding Source={x:Reference DeleteModeButton}, Path=IsVisible}" />
+                                        
+                                <CheckBox Grid.Column="2"
+                                         IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                         Color="#F44336"
+                                         Margin="10,0,0,0"
+                                         IsVisible="{Binding Source={x:Reference DeleteSelectedButton}, Path=IsVisible}" />
+                            </Grid>
                         </Grid>
                     </ViewCell>
                 </DataTemplate>

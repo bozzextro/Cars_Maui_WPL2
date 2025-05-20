@@ -58,5 +58,87 @@ namespace CoolCars.Business
             var result = carData.Insert(car);
             return result;
         }
+        
+        public static BaseResult Delete(int carId)
+        {
+            BaseResult result = new BaseResult();
+            
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(LocalSettings.ConnectionString))
+                {
+                    connection.Open();
+                    
+                    string query = "DELETE FROM Cars WHERE Id = @Id";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.Add("@Id", SqlDbType.Int).Value = carId;
+                        
+                        int rowsAffected = command.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            result.Success = true;
+                        }
+                        else
+                        {
+                            result.Success = false;
+                            result.Message = "Car not found";
+                        }
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+            
+            return result;
+        }
+        
+        public static BaseResult DeleteMultiple(List<int> carIds)
+        {
+            BaseResult result = new BaseResult();
+            
+            if (carIds == null || carIds.Count == 0)
+            {
+                result.Success = false;
+                result.Message = "No car IDs provided";
+                return result;
+            }
+            
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(LocalSettings.ConnectionString))
+                {
+                    connection.Open();
+                    
+
+                    string idList = string.Join(",", carIds);
+                    string query = $"DELETE FROM Cars WHERE Id IN ({idList})";
+                    
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        int rowsAffected = command.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            result.Success = true;
+                        }
+                        else
+                        {
+                            result.Success = false;
+                            result.Message = "No cars found with the provided IDs";
+                        }
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+            
+            return result;
+        }
     }
 }
