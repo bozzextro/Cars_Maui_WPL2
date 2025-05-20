@@ -4,25 +4,64 @@
              x:Class="CoolCars.MAUI.MainPage"
              Title="Cool Cars"
              BackgroundColor="#f0f0f0">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="CardStyle" TargetType="Grid">
+                <Setter Property="BackgroundColor" Value="White" />
+            </Style>
+            <Style x:Key="HeaderTextStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="#1A237E" />
+                <Setter Property="FontSize" Value="22" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+            <Style x:Key="InfoPanelStyle" TargetType="StackLayout">
+                <Setter Property="BackgroundColor" Value="#F5F5F5" />
+            </Style>
+            <Style x:Key="SectionHeaderStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="#424242" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+            <Style x:Key="InfoTextStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="#616161" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <Grid RowDefinitions="Auto,*" Padding="10">
-        <HorizontalStackLayout Grid.Row="0" HorizontalOptions="Center" Spacing="20" Margin="0,10,0,10">
-            <Button 
-                Text="Load Cars" 
-                Clicked="OnLoadCarsClicked"
-                BackgroundColor="#1E88E5"
-                TextColor="White"
-                FontAttributes="Bold"
-                Padding="15,10" />
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,10,0,10">
+            <HorizontalStackLayout Grid.Column="0" HorizontalOptions="Center" Spacing="20">
+                <Button 
+                    Text="Load Cars" 
+                    Clicked="OnLoadCarsClicked"
+                    BackgroundColor="#1E88E5"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    Padding="15,10" />
+                
+                <Button 
+                    Text="Add Car" 
+                    Clicked="OnAddCarClicked"
+                    BackgroundColor="#4CAF50"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    Padding="15,10" />  
+            </HorizontalStackLayout>
             
             <Button 
-                Text="Add Car" 
-                Clicked="OnAddCarClicked"
-                BackgroundColor="#4CAF50"
+                Grid.Column="1"
+                x:Name="NightModeButton"
+                Text="🌙"
+                Clicked="OnNightModeClicked"
+                BackgroundColor="#673AB7"
                 TextColor="White"
-                FontAttributes="Bold"
-                Padding="15,10" />  
-        </HorizontalStackLayout>
+                FontSize="18"
+                WidthRequest="50"
+                HeightRequest="50"
+                HorizontalOptions="End"
+                Margin="0,0,10,0" />
+        </Grid>
             
         <ListView 
             Grid.Row="1"
@@ -36,15 +75,13 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid Padding="12" Margin="0,8" RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="*,*" BackgroundColor="White">
+                        <Grid Padding="12" Margin="0,8" RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="*,*" Style="{StaticResource CardStyle}">
                             <Label 
                                 Grid.Row="0" 
                                 Grid.Column="0"
                                 Grid.ColumnSpan="2"
                                 Text="{Binding Name}" 
-                                FontSize="22" 
-                                FontAttributes="Bold"
-                                TextColor="#1A237E"
+                                Style="{StaticResource HeaderTextStyle}"
                                 Margin="0,0,0,8" />
                             
                             <Image 
@@ -56,20 +93,20 @@
                                 HeightRequest="200"
                                 Margin="0,0,0,12" />
                             
-                            <StackLayout Grid.Row="2" Grid.Column="0" Spacing="6" Margin="0,0,5,0" Padding="10" BackgroundColor="#F5F5F5">
-                                <Label Text="Engine Specs:" FontAttributes="Bold" TextColor="#424242" FontSize="16" />
-                                <Label Text="{Binding EngineSpecs}" TextColor="#616161" />
+                            <StackLayout Grid.Row="2" Grid.Column="0" Spacing="6" Margin="0,0,5,0" Padding="10" Style="{StaticResource InfoPanelStyle}">
+                                <Label Text="Engine Specs:" Style="{StaticResource SectionHeaderStyle}" />
+                                <Label Text="{Binding EngineSpecs}" Style="{StaticResource InfoTextStyle}" />
                                 
-                                <Label Text="Price:" FontAttributes="Bold" TextColor="#424242" FontSize="16" Margin="0,8,0,0" />
-                                <Label Text="{Binding Price}" TextColor="#616161" FontAttributes="Bold" />
+                                <Label Text="Price:" Style="{StaticResource SectionHeaderStyle}" Margin="0,8,0,0" />
+                                <Label Text="{Binding Price}" Style="{StaticResource InfoTextStyle}" FontAttributes="Bold" />
                             </StackLayout>
                         
-                            <StackLayout Grid.Row="2" Grid.Column="1" Spacing="6" Margin="5,0,0,0" Padding="10" BackgroundColor="#F5F5F5">
-                                <Label Text="Performance:" FontAttributes="Bold" TextColor="#424242" FontSize="16" />
-                                <Label Text="{Binding Acceleration_0_100, StringFormat='0-100 km/h: {0}'}" TextColor="#616161" />
-                                <Label Text="{Binding Acceleration_0_200, StringFormat='0-200 km/h: {0}'}" TextColor="#616161" />
-                                <Label Text="{Binding QuarterMileTime, StringFormat='Quarter Mile: {0}'}" TextColor="#616161" />
-                                <Label Text="{Binding TopSpeed, StringFormat='Top Speed: {0}'}" TextColor="#616161" />
+                            <StackLayout Grid.Row="2" Grid.Column="1" Spacing="6" Margin="5,0,0,0" Padding="10" Style="{StaticResource InfoPanelStyle}">
+                                <Label Text="Performance:" Style="{StaticResource SectionHeaderStyle}" />
+                                <Label Text="{Binding Acceleration_0_100, StringFormat='0-100 km/h: {0}'}" Style="{StaticResource InfoTextStyle}" />
+                                <Label Text="{Binding Acceleration_0_200, StringFormat='0-200 km/h: {0}'}" Style="{StaticResource InfoTextStyle}" />
+                                <Label Text="{Binding QuarterMileTime, StringFormat='Quarter Mile: {0}'}" Style="{StaticResource InfoTextStyle}" />
+                                <Label Text="{Binding TopSpeed, StringFormat='Top Speed: {0}'}" Style="{StaticResource InfoTextStyle}" />
                             </StackLayout>
                             
                             <StackLayout Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Spacing="10" Margin="0,12,0,0">
