@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:CoolCars.MAUI.Converters"
              x:Class="CoolCars.MAUI.MainPage"
-             Title="Cool Cars"
+             NavigationPage.HasNavigationBar="False"
              BackgroundColor="#f0f0f0">
     
     <ContentPage.Resources>
@@ -33,37 +33,59 @@
     </ContentPage.Resources>
 
     <Grid RowDefinitions="Auto,*" Padding="10">
-        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,10,0,10">
-            <HorizontalStackLayout Grid.Column="0" HorizontalOptions="Center" Spacing="20">
-                <Button 
-                    Text="Load Cars" 
-                    Clicked="OnLoadCarsClicked"
-                    BackgroundColor="#1E88E5"
-                    TextColor="White"
-                    FontAttributes="Bold"
-                    Padding="15,10" />
+        <Grid Grid.Row="0" RowDefinitions="Auto,Auto" Margin="0,0,0,15">
+            <!-- Header Banner -->
+            <Grid Grid.Row="0" BackgroundColor="#1A237E" Padding="15,20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                
+                <StackLayout Grid.Column="0" VerticalOptions="Center">
+                    <Label Text="COOL CARS" FontSize="28" FontAttributes="Bold" TextColor="White" />
+                    <Label Text="Premium Automotive Collection" FontSize="14" TextColor="#BBDEFB" />
+                </StackLayout>
                 
                 <Button 
-                    Text="Add Car" 
-                    Clicked="OnAddCarClicked"
-                    BackgroundColor="#4CAF50"
+                    Grid.Column="1"
+                    x:Name="NightModeButton"
+                    Text="🌙"
+                    Clicked="OnNightModeClicked"
+                    BackgroundColor="#3949AB"
                     TextColor="White"
-                    FontAttributes="Bold"
-                    Padding="15,10" />  
-            </HorizontalStackLayout>
+                    FontSize="18"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    CornerRadius="25"
+                    HorizontalOptions="End"
+                    VerticalOptions="Center" />
+            </Grid>
             
-            <Button 
-                Grid.Column="1"
-                x:Name="NightModeButton"
-                Text="🌙"
-                Clicked="OnNightModeClicked"
-                BackgroundColor="#673AB7"
-                TextColor="White"
-                FontSize="18"
-                WidthRequest="50"
-                HeightRequest="50"
-                HorizontalOptions="End"
-                Margin="0,0,10,0" />
+            <!-- Action Buttons -->
+            <Grid Grid.Row="1" Padding="15,10" BackgroundColor="#EEEEEE">
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+                    <Button 
+                        Text="🔄 Load Cars" 
+                        Clicked="OnLoadCarsClicked"
+                        BackgroundColor="#1E88E5"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        CornerRadius="8"
+                        Padding="15,10" />
+                    
+                    <Button 
+                        Text="➕ Add Car" 
+                        Clicked="OnAddCarClicked"
+                        BackgroundColor="#4CAF50"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        CornerRadius="8"
+                        Padding="15,10" />  
+                </HorizontalStackLayout>
+            </Grid>
         </Grid>
             
         <ListView 
