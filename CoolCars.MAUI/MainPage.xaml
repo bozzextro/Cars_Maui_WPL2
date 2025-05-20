@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:CoolCars.MAUI.Converters"
              x:Class="CoolCars.MAUI.MainPage"
              Title="Cool Cars"
              BackgroundColor="#f0f0f0">
     
     <ContentPage.Resources>
         <ResourceDictionary>
+            <converters:ImageSourceConverter x:Key="ImageSourceConverter" />
             <Style x:Key="CardStyle" TargetType="Grid">
                 <Setter Property="BackgroundColor" Value="White" />
             </Style>
@@ -26,6 +28,7 @@
             <Style x:Key="InfoTextStyle" TargetType="Label">
                 <Setter Property="TextColor" Value="#616161" />
             </Style>
+            <x:String x:Key="DefaultCarImageUrl">https://cdn.motor1.com/images/mgl/NGz9e/s1/2021-bugatti-chiron-super-sport-300.jpg</x:String>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -88,7 +91,7 @@
                                 Grid.Row="1" 
                                 Grid.Column="0"
                                 Grid.ColumnSpan="2"
-                                Source="{Binding ImageUrl}" 
+                                Source="{Binding ImageUrl, Converter={StaticResource ImageSourceConverter}}"
                                 Aspect="AspectFill"
                                 HeightRequest="200"
                                 Margin="0,0,0,12" />

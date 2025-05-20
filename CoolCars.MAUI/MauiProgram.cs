@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using Plugin.Maui.Audio;
+using CoolCars.MAUI.Handlers;
 
 namespace CoolCars.MAUI;
 
@@ -17,7 +18,8 @@ public static class MauiProgram
 			})
 			.ConfigureMauiHandlers(handlers =>
 			{
-				// Add any custom handlers here if needed
+				// Initialize the image handler for fallback images
+				ImageHandler.Initialize();
 			});
 		
 		// Register the audio service
