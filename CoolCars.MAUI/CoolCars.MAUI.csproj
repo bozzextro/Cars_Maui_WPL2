@@ -60,6 +60,9 @@
 		
 		<!-- Explicitly include sound files -->
 		<MauiAsset Include="Resources\Raw\Sounds\*.mp3" LogicalName="Sounds\%(Filename)%(Extension)" />
+		
+		<!-- Explicitly include video files -->
+		<MauiAsset Include="Resources\Raw\Videos\*.mp4" LogicalName="Videos\%(Filename)%(Extension)" />
 	</ItemGroup>
 
 	<ItemGroup>

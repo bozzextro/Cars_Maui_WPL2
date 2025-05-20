@@ -60,12 +60,20 @@
                                 <Label Text="{Binding Acceleration_0_200, StringFormat='0-200 km/h: {0}'}" />
                                 <Label Text="{Binding QuarterMileTime, StringFormat='Quarter Mile: {0}'}" />
                                 <Label Text="{Binding TopSpeed, StringFormat='Top Speed: {0}'}" />
-                                <Button Text="Play Engine Sound" 
-                                        Margin="0,10,0,0"
-                                        BackgroundColor="#FF5722"
-                                        TextColor="White"
-                                        CommandParameter="{Binding Name}"
-                                        Clicked="OnPlaySoundClicked" />
+                                <StackLayout Orientation="Horizontal" Spacing="10" Margin="0,10,0,0">
+                                    <Button Text="Play Engine Sound" 
+                                            BackgroundColor="#FF5722"
+                                            TextColor="White"
+                                            CommandParameter="{Binding Name}"
+                                            Clicked="OnPlaySoundClicked"
+                                            HorizontalOptions="FillAndExpand" />
+                                    <Button Text="Play Video" 
+                                            BackgroundColor="#2196F3"
+                                            TextColor="White"
+                                            CommandParameter="{Binding Name}"
+                                            Clicked="OnPlayVideoClicked"
+                                            HorizontalOptions="FillAndExpand" />
+                                </StackLayout>
                             </StackLayout>
                             
                             <BoxView 

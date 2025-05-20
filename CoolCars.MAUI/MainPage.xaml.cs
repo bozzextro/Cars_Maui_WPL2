@@ -8,6 +8,7 @@ public partial class MainPage : ContentPage
 {
 	private readonly RestService _restService;
 	private readonly SoundPlayerService _soundPlayerService;
+	private readonly VideoPlayerService _videoPlayerService;
 	private ObservableCollection<Car> _cars;
 
 	public MainPage()
@@ -15,6 +16,7 @@ public partial class MainPage : ContentPage
 		InitializeComponent();
 		_restService = new RestService();
 		_soundPlayerService = new SoundPlayerService();
+		_videoPlayerService = new VideoPlayerService();
 		_cars = new ObservableCollection<Car>();
 		BindingContext = _cars;
 	}
@@ -72,6 +74,22 @@ public partial class MainPage : ContentPage
 		catch (Exception ex)
 		{
 			await DisplayAlert("Error", $"Failed to play sound: {ex.Message}", "OK");
+		}
+	}
+	
+	private async void OnPlayVideoClicked(object sender, EventArgs e)
+	{
+		try
+		{
+			if (sender is Button button && button.CommandParameter is string carName)
+			{
+				string videoFileName = _videoPlayerService.GetVideoPathForCar(carName);
+				await Navigation.PushAsync(new SimpleVideoPlayerPage(videoFileName));
+			}
+		}
+		catch (Exception ex)
+		{
+			await DisplayAlert("Error", $"Failed to play video: {ex.Message}", "OK");
 		}
 	}
 }

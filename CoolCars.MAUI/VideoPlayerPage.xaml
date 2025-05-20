@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CoolCars.MAUI.VideoPlayerPage"
+             Title="Car Video">
+    
+    <Grid RowDefinitions="*,Auto">
+        <WebView 
+            x:Name="videoWebView"
+            Grid.Row="0"
+            VerticalOptions="FillAndExpand" />
+            
+        <Button 
+            Grid.Row="1"
+            Text="Close"
+            Clicked="OnCloseClicked"
+            HorizontalOptions="Center"
+            Margin="0,10,0,20" />
+    </Grid>
+    
+</ContentPage>
