@@ -10,7 +10,7 @@ namespace CoolCars.MAUI.Services
     {
         private readonly HttpClient _client;
 
-        private const string REST_URL = "https://ljd3nh03-7051.euw.devtunnels.ms/api/car";
+        private const string REST_URL = "https://t57ss5pg-7051.euw.devtunnels.ms/api/car";
 
         public RestService()
         {
